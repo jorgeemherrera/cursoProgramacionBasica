@@ -5,38 +5,58 @@ var teclas =  {
   DOWN: 40
 }
 
-console.log(teclas);
-
-
 document.addEventListener('keyup', dibujarTeclado);
+document.addEventListener('mouseup', dibujarMouse);
+
+var cuadrito = document.getElementById('area_dibujo');
+var papel = cuadrito.getContext('2d');
+
+var x = 100;
+var y = 100;
+
+dibujarLinea("red", x-1, y-1, x+1, y+1, papel)
+
+function dibujarLinea(color, xInicial, yInicial, xFinal, yFinal, lienzo) {
+  lienzo.beginPath();
+  lienzo.strokeStyle = color;
+  lienzo.lineWidth = 2;
+  lienzo.moveTo(xInicial, yInicial);
+  lienzo.lineTo(xFinal, yFinal);
+  lienzo.stroke();
+  lienzo.closePath();
+}
 
 function dibujarTeclado(evento) {
-  // if (evento.keyCode == teclas.LEFT) {
-  //   console.log('vamos pa izquierda')
-  // }
-  // if (evento.keyCode == teclas.UP) {
-  //   console.log('vamos pa arriba')
-  // }
-  // if (evento.keyCode == teclas.RIGHT) {
-  //   console.log('vamos pa derecha')
-  // }
-  // if (evento.keyCode == teclas.DOWN) {
-  //   console.log('vamos pa abajo')
-  // }
-
+  console.log(evento)
+  var color = "brown";
+  var movimiento = 5;
   switch(evento.keyCode) {
     case teclas.LEFT:
-      console.log('vamos pa izquierda');
+      dibujarLinea(color, x, y, x - movimiento, y, papel);
+      x = x - movimiento;
     break;
-    case teclas.UP:  console.log('vamos pa arriba');
+    case teclas.UP:
+      dibujarLinea(color, x, y, x, y - movimiento, papel);
+      y = y - movimiento;
     break;
     case teclas.RIGHT:
-      console.log('vamos pa derecha');
+      dibujarLinea(color, x, y, x + movimiento, y, papel);
+      x = x + movimiento;
     break;
     case teclas.DOWN:
-      console.log('vamos pa abajo');
+      dibujarLinea(color, x, y, x, y + movimiento, papel);
+      y = y + movimiento;
     break;
     default:
       console.log('ninguna es flecha, por favor oprimir una flecha');
   }
+}
+
+function dibujarMouse(evento) {
+  console.log(evento)
+  var color = "green";
+  var movimiento = 5;
+  dibujarLinea(color, x, y, evento.offsetX, evento.offsetY, papel);
+  x = evento.offsetX;
+  y = evento.offsetY;
 }
